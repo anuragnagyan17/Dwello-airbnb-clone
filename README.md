@@ -1,7 +1,5 @@
 # Dwello - Property Rental Platform
 
-![Dwello Cover](https://res.cloudinary.com/dag2wsmmm/image/upload/v1782550659/Dwello_DEV/fzyulky3sewpgu1bwyk6.jpg)
-
 Dwello is a full-stack, responsive property rental web application inspired by Airbnb. It allows users to browse diverse properties, create an account to list their own homes, and leave interactive reviews.
 
 ## 🚀 Features
@@ -21,45 +19,20 @@ Dwello is a full-stack, responsive property rental web application inspired by A
 - **Maps & Geocoding:** Leaflet.js, Node-Geocoder (OpenStreetMap)
 - **Cloud Storage:** Cloudinary
 
-## 💻 Local Setup & Installation
+## 💡 What I Learned
+Building this full-stack application from scratch allowed me to deepen my understanding of:
+- **Authentication & Security:** Implementing Passport.js for secure session-based authentication and protecting routes from unauthorized access.
+- **MVC Architecture:** Structuring a Node.js/Express app using the Model-View-Controller pattern for clean, maintainable code.
+- **Database Modeling:** Designing complex data relationships in MongoDB and using Mongoose middleware for cascading deletes (e.g., deleting a listing deletes all its reviews).
+- **Third-Party Integrations:** Connecting cloud APIs like Cloudinary for image hosting and utilizing Leaflet + OpenStreetMap for completely open-source geocoding and interactive maps.
 
-To run this project on your local machine, follow these steps:
+## 🚧 Challenges & Problem Solving
+A major technical challenge I faced was handling third-party mapping APIs. Initially, the project was designed for a paid mapping service. To make the project completely free and open-source without sacrificing quality, I migrated the entire mapping architecture to **Leaflet.js and OpenStreetMap**. This required restructuring the frontend map rendering logic and integrating `node-geocoder` on the backend to successfully convert user input into geographic coordinates.
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/anuragnagyan17/Dwello-airbnb-clone.git
-   cd Dwello-airbnb-clone
-   ```
-
-2. **Install dependencies:**
-   ```bash
-   npm install --legacy-peer-deps
-   ```
-
-3. **Set up Environment Variables:**
-   Create a `.env` file in the root of your project and add your own credentials:
-   ```env
-   CLOUD_NAME=your_cloudinary_name
-   CLOUD_API_KEY=your_cloudinary_key
-   CLOUD_API_SECRET=your_cloudinary_secret
-   ATLASDB_URL=your_mongodb_connection_string
-   SECRET=your_session_secret
-   ```
-
-4. **Initialize the Database:**
-   *(Optional) To populate your database with dummy listings:*
-   ```bash
-   node init/index.js
-   ```
-
-5. **Start the server:**
-   ```bash
-   nodemon app.js
-   ```
-   Open your browser and navigate to `http://localhost:8080`.
+## 🔮 Future Improvements
+- Implement a live booking system and calendar integration.
+- Add a user-to-user messaging feature.
+- Build an analytics dashboard for property owners.
 
 ## 🤝 Contributing
 Contributions, issues, and feature requests are welcome!
-
-## 📝 License
-This project is open source and available under the [ISC License](LICENSE).
