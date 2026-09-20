@@ -6,8 +6,53 @@ const geocoder = NodeGeocoder(options);
 
 
 module.exports.index = async (req, res) => {
-    const allListings = await Listing.find({});
-    res.render("listings/index.ejs", { allListings });
+    const { category, q } = req.query;
+    let filter = {};
+    let andConditions = [];
+
+    if (q) {
+        andConditions.push({
+            $or: [
+                { title: { $regex: q, $options: 'i' } },
+                { location: { $regex: q, $options: 'i' } }
+            ]
+        });
+    }
+
+    if (category && category !== "Trending") {
+        andConditions.push({
+            $or: [
+                { category: category },
+                { description: { $regex: category, $options: 'i' } },
+                { location: { $regex: category, $options: 'i' } }
+            ]
+        });
+    }
+
+    if (andConditions.length > 0) {
+        filter.$and = andConditions;
+    }
+
+    let allListings;
+    if (category === "Trending") {
+        allListings = await Listing.find(filter).populate("reviews");
+        allListings.forEach(listing => {
+            let sum = 0;
+            for(let review of listing.reviews) {
+                sum += review.rating || 0;
+            }
+            listing._avgRating = listing.reviews.length > 0 ? sum / listing.reviews.length : 0;
+            listing._reviewCount = listing.reviews.length;
+        });
+        allListings.sort((a, b) => {
+            if (b._avgRating !== a._avgRating) return b._avgRating - a._avgRating;
+            return b._reviewCount - a._reviewCount;
+        });
+    } else {
+        allListings = await Listing.find(filter);
+    }
+
+    res.render("listings/index.ejs", { allListings, category, q });
 };
 
 module.exports.renderNewForm = (req, res) => {
